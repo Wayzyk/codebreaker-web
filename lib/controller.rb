@@ -1,4 +1,4 @@
-require 'erb'
+require 'haml'
 require 'yaml'
 require 'codebreaker'
 require_relative './helper'

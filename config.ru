@@ -1,11 +1,11 @@
-class Application
-  def call(env)
-    status  = 200
-    headers = { "Content-Type" => "text/html" }
-    body    = ["Yay, your first web application! <3"]
+require_relative './lib/racker'
 
-    [status, headers, body]
-  end
+app = Rack::Builder.new do
+  use Rack::Reloader, 0
+  use Rack::Static, :urls => ["/stylesheets"], :root => "public"
+  use Rack::Session::Cookie, :key => 'rack.session',
+                             :secret => 'secret'
+  run Racker
 end
 
-run Application.new
+run app
