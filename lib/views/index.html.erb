@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CodeBreaker</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" type="text/css">
+  </head>
+  <body>
+  <div id="container">
+    <h1>Welcome to Codebreaker Game</h1>
+    <div class="column">
+      <div class="column1">
+        <% unless agree_to_save %>
+          <% if win? %>
+            <div> You won! Congratulations! </div>
+          <% else %>
+            <% if @game.available_attempts.zero? %>
+              <div> You don't have attempts.<br> Game over!</div>
+            <% else %>
+              <div class="guess"> Enter your guess:</div>
+              <form class="guess1" method="post" action="/check_input">
+                <input class="input" name="guess" type="text">
+                <input class="btn" type="submit" value="Submit">
+              </form>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <form class="new-game" method="post" action="/new_game">
+          <input class="btn" type="submit" value="New game">
+        </form>
+
+        <div class="table1">
+          <% if guesses && results %>
+            <table class="table-game">
+              <% guesses.each_with_index do |guess, i| %>
+                <tr>
+                  <td>Guess:</td>
+                  <td><%= guess %></td>
+                  <td>Result:</td>
+                  <td><%= results[i] %></td>
+                </tr>
+              <% end %>
+            </table>
+          <% end %>
+
+          <% if condition_for_save %>
+            <form class="save" method="post" action="/save_result">
+              <input class="input" name="name" type="text" placeholder="Your name">
+              <input class="btn" type="submit" value="Save result">
+            </form>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="column1">
+        <div class="attempt">Available attempts: <%= game.available_attempts %></div>
+          <% if game.available_attempts > 0 %>
+            <form class="hint" method="get" action="/show_hint">
+              <input class="btn" type="submit" value="Hint">
+            </form>
+            <p class="hint-text"><%= hint %></p>
+          <% end %>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="results">
+        <% if load_score.any? %>
+          <h3>Results</h3>
+          <table>
+            <tr>
+              <th>Item No</th>
+              <th>Name</th>
+              <th>Turns</th>
+              <th>Date</th>
+            </tr>
+            <% load_score.each_with_index do |row, i| %>
+              <tr>
+                <td><%= i+1 %></td>
+                <td><%= row[0] %></td>
+                <td><%= row[1] %></td>
+                <td><%= row[2] %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
