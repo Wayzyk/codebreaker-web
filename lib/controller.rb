@@ -83,7 +83,7 @@ class Controller
     saved_score = []
     if File.exist?('score.yml')
       file = File.open('score.yml')
-      score = YAML::load_documents(file) do |doc|
+      score = YAML::load_stream(file) do |doc|
         saved_score.push  doc.split(';')
       end
     end
